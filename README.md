@@ -10,11 +10,14 @@ SYNOPSIS
 
     use File::Find;
 
-    my @list := find(dir => 'foo');
+    my @list := find(dir => 'foo'); # lazy list
     say @list[0..3];
 
-    my $list = find(dir => 'foo');
+    my $list = find(dir => 'foo'); # lazy list
     say $list[0..3];
+
+    my @list = find(dir => 'foo'); # eager list
+    say @list[0..3];
 
 DESCRIPTION
 ===========
@@ -40,7 +43,7 @@ Given a type, `find()` will only return files being the given type. The availabl
 
 By default, `find` will recursively traverse a directory tree, descending into any subdirectories it finds. This behaviour can be changed by setting `recursive` to a false value (`:!recursive`). In this case, only the first level entries will be processed.
 
-### exclude
+### `:$exclude`
 
 Exclude is meant to be used for skipping certain big and uninteresting directories, like '.git'. Neither they nor any of their contents will be returned, saving a significant amount of time.
 

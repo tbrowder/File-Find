@@ -53,11 +53,14 @@ File::Find - Get a lazy list of a directory tree
 
     use File::Find;
 
-    my @list := find(dir => 'foo');
+    my @list := find(dir => 'foo'); # lazy list
     say @list[0..3];
 
-    my $list = find(dir => 'foo');
+    my $list = find(dir => 'foo'); # lazy list
     say $list[0..3];
+
+    my @list = find(dir => 'foo'); # eager list
+    say @list[0..3];
 
 =head1 DESCRIPTION
 
@@ -96,7 +99,7 @@ into any subdirectories it finds. This behaviour can be changed by setting
 C<recursive> to a false value (C<:!recursive>). In this case, only the first level entries
 will be processed.
 
-=head3 exclude
+=head3 C<:$exclude>
 
 Exclude is meant to be used for skipping certain big and uninteresting
 directories, like '.git'. Neither they nor any of their contents will be

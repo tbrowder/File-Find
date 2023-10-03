@@ -66,29 +66,40 @@ recursively, depth first.
 The only exported function, C<find()>, generates a lazy
 list of files in given directory. Every element of the list is an
 C<IO::Path> object, described below.
-C<find()> takes one (or more) named arguments. The C<dir> argument
+
+C<find()> takes one (or more) named arguments. The C<:$dir> argument
 is mandatory, and sets the directory C<find()> will traverse. 
-There are also few optional arguments. If more than one is passed,
+
+There are also a few optional arguments. If more than one is passed,
 all of them must match for a file to be returned.
 
-=head2 name
+=head2 Options
 
-Specify a name of the file C<File::Find> is ought to look for. If you
+=head3 C<:$name>
+
+Specify a name of the file C<File::Find> ought to look for. If you
 pass a string here, C<find()> will return only the files with the given
 name. When passing a regex, only the files with path matching the
 pattern will be returned. Any other type of argument passed here will
 just be smartmatched against the path (which is exactly what happens to
 regexes passed, by the way).
 
-=head2 type
+=head3 C<:$type>
 
 Given a type, C<find()> will only return files being the given type.
 The available types are C<file>, C<dir> or C<symlink>.
 
-=head2 exclude
+=head3 C<:$recursive = True>
+
+By default, C<find> will recursively traverse a directory tree, descending
+into any subdirectories it finds. This behaviour can be changed by setting
+C<recursive> to a false value (C<:!recursive>). In this case, only the first level entries
+will be processed.
+
+=head3 exclude
 
 Exclude is meant to be used for skipping certain big and uninteresting
-directories, like '.git'. Neither them nor any of their contents will be
+directories, like '.git'. Neither they nor any of their contents will be
 returned, saving a significant amount of time.
 
 The value of C<exclude> will be smartmatched against each IO object
@@ -96,28 +107,21 @@ found by File::Find. It's recommended that it's passed as an IO object
 (or a Junction of those) so we avoid silly things like slashes
 vs backslashes on different platforms.
 
-=head2 keep-going
+=head3 C<:$keep-going = False>
 
 Parameter C<keep-going> tells C<find()> to not stop finding files
 on errors such as 'Access is denied', but rather ignore the errors
 and keep going.
 
-=head2 recursive
-
-By default, C<find> will recursively traverse a directory tree, descending
-into any subdirectories it finds. This behaviour can be changed by setting
-C<recursive> to a false value. In this case, only the first level entries
-will be processed.
-
 =head1 Perl's File::Find
 
-Please note, that this module is not trying to be the verbatim port of
+Please note that this module is not trying to be the verbatim port of
 Perl's File::Find module. Its interface is closer to Perl's
 File::Find::Rule, and its features are planned to be similar one day.
 
 =head1 CAVEATS
 
-List assignment is eager in Raku, so if You assign C<find()> result
+List assignment is eager in Raku, so if You assign C<find()>'s result
 to an array, the elements will be copied and the laziness will be
 spoiled. For a proper lazy list, use either binding (C<:=>) or assign
 a result to a scalar value (see SYNOPSIS).
